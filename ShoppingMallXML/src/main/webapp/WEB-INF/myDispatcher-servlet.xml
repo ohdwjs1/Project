@@ -10,9 +10,9 @@
 <context:component-scan base-package="com.sist.web.controller, com.sist.web.dao"></context:component-scan>
  <bean name="ds" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
  	<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
- 	<property name="url" value="jdbc:oracle:thin:@172.30.27.218:1521:orcl"></property>
- 	<property name="username" value="LOCALHOST"></property>
- 	<property name="password" value="111111"></property>
+ 	<property name="url" value="jdbc:oracle:thin:@211.238.142.15:1521:orcl"></property>
+ 	<property name="username" value="REALTY"></property>
+ 	<property name="password" value="REALTY"></property>
  </bean>
    <bean name="SqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
    		<property name="dataSource" ref="ds"></property>
