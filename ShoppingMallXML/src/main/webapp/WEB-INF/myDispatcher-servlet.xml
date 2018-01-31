@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+        
+<context:component-scan base-package="com.sist.web.controller, com.sist.web.dao"></context:component-scan>
+ <bean name="ds" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+ 	<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
+ 	<property name="url" value="jdbc:oracle:thin:@localhost:1521:orcl"></property>
+ 	<property name="username" value="LOCALHOST"></property>
+ 	<property name="password" value="111111"></property>
+ </bean>
+   <bean name="SqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+   		<property name="dataSource" ref="ds"></property>
+   		<property name="mapperLocations" value="classpath:com/sist/web/dao/mapper/*.xml"></property>
+   </bean>
+	<bean name="SqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+   		<constructor-arg index="0" ref="SqlSessionFactory" />
+    </bean>
+	<bean name="noticeDao" class="com.sist.web.dao.NoticeDAOService">
+    	<property name="sqlSession" ref="SqlSessionTemplate"></property>
+    </bean>
+       <bean name="memberDao" class="com.sist.web.dao.MemberDAOService">
+    	<property name="sqlSession" ref="SqlSessionTemplate"></property>
+    </bean>
+	<bean name="cartDao" class="com.sist.web.dao.CartDAOService">
+    	<property name="sqlSession" ref="SqlSessionTemplate"></property>
+    </bean>
+    <bean name="billDao" class="com.sist.web.dao.BillDAOService">
+    	<property name="sqlSession" ref="SqlSessionTemplate"></property>
+    </bean>
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+    	<property name="messageConverters">
+    		<list>
+    			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+    				<property name="supportedMediaTypes">
+    					<list>
+    						<value>text/plain;charset=UTF-8</value>
+    					</list>
+    				</property>
+    			</bean>
+    		</list>
+    	</property>
+    </bean>
+</beans>

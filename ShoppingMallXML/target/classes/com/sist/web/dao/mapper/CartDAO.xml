@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sist.web.dao.CartDAO">	
+	<insert id="insertCart">
+	<selectKey order="BEFORE" resultType="String" keyProperty="seq">
+		SELECT NVL(MAX(TO_NUMBER(SEQ)),0)+1 FROM CART
+	</selectKey>
+		INSERT INTO CART
+			(SEQ,STOCK,ID,N_SEQ,ISCOOKIE)
+				VALUES(#{seq},#{param1.stock},#{param2},#{param1.n_seq},#{param3})
+	</insert>
+		
+	<select id="getCart" resultType="com.sist.web.vo.Cart">
+		SELECT * FROM CART WHERE ID=#{param1} AND ISCOOKIE=#{param2}
+	</select>
+	
+	<delete id="delCart">
+		DELETE FROM CART WHERE ID=#{param1} AND ISCOOKIE=#{param2}
+	</delete>
+
+	
+</mapper>

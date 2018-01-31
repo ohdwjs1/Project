@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sist.web.dao.NoticeDAO">
+	<insert id="write">
+	<selectKey order="BEFORE" keyProperty="seq" resultType="String">
+	SELECT NVL(MAX(TO_NUMBER(SEQ))+1,0) FROM NOTICES
+	</selectKey>
+		INSERT INTO NOTICES
+			(SEQ,PNAME,CONTENT,PRICE,STOCK,IMG,CATEGORIE)
+				VALUES(#{seq},#{pname},#{content},#{price},#{stock},#{img},#{categorie})
+	</insert>
+	<select id="allList" resultType="com.sist.web.vo.Notice">
+		SELECT * FROM 
+			(SELECT ROWNUM RN,N.* FROM 
+				(SELECT * FROM NOTICES WHERE ${param2} LIKE '%${param3}%' ORDER BY TO_NUMBER(SEQ) 
+					DESC) 
+						N)
+							WHERE RN BETWEEN (1+(#{param1}-1)*5) AND (1+(#{param1}-1)*5)+4
+	</select>
+	<select id="categorieList" resultType="com.sist.web.vo.Notice">
+		SELECT * FROM 
+			(SELECT ROWNUM RN,N.* FROM 
+				(SELECT * FROM NOTICES WHERE ${param2} LIKE '%${param3}%' AND CATEGORIE=#{param4} ORDER BY TO_NUMBER(SEQ) 
+					DESC) 
+						N)
+							WHERE RN BETWEEN (1+(#{param1}-1)*5) AND (1+(#{param1}-1)*5)+4
+	</select>
+	<select id="getNotice" resultType="com.sist.web.vo.Notice">
+		SELECT * FROM NOTICES WHERE SEQ=#{seq}
+	</select>
+	<delete id="delNotice">
+		DELETE NOTICES WHERE SEQ=#{seq}
+	</delete>
+	<update id="updateNotice">
+		UPDATE NOTICES SET PNAME=#{pname}, CONTENT=#{content}, PRICE=#{price}, STOCK=#{stock} WHERE SEQ=#{seq}
+	</update>
+	<select id="getSeqCount" resultType="Integer">
+		SELECT COUNT(SEQ) AS seq FROM NOTICES WHERE ${param1} LIKE '%${param2}%'
+	</select>
+	<insert id="insertReply">
+	<selectKey order="BEFORE" resultType="String" keyProperty="seq">
+		(SELECT NVL(MAX(TO_NUMBER(SEQ)),0)+1 FROM REPLY)
+	</selectKey>
+		INSERT INTO REPLY
+			(SEQ,N_SEQ,M_ID,TITLE,CONTENT)
+				VALUES(#{seq},#{n_seq},#{m_id},#{title},#{content})
+	</insert>
+	<select id="getReply" resultType="com.sist.web.vo.Reply">
+		SELECT * FROM REPLY WHERE N_SEQ=#{seq} ORDER BY REGDATE DESC
+	</select>
+</mapper>

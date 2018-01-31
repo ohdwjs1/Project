@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sist.web.dao.MemberDAO">
+	<insert id="join">
+		INSERT INTO MEMBERS(MID,NAME,PWD,PHONE,EMAIL)VALUES(#{mid},#{name},#{pwd},#{phone},#{email})
+	</insert>
+	<select id="idCheck" resultType="com.sist.web.vo.Member">
+		SELECT * FROM MEMBERS WHERE MID=#{mid}
+	</select>
+	<delete id="withdraw">
+		DELETE FROM MEMBERS WHERE MID=#{mid}
+	</delete>
+	<update id="update">
+		UPDATE MEMBERS SET PHONE=#{phone},EMAIL=#{email},ADDRESS=#{address} WHERE MID=#{mid}
+	</update>
+	<select id="idFind" resultType="com.sist.web.vo.Member">
+		SELECT * FROM MEMBERS WHERE NAME=#{name} AND EMAIL=#{email}
+	</select>
+	<select id="pwdFind" resultType="com.sist.web.vo.Member">
+		SELECT * FROM MEMBERS WHERE NAME=#{name} AND EMAIL=#{email} AND MID=#{mid}
+	</select>
+	<update id="updateMileage">
+	<selectKey resultType="Integer" order="BEFORE" keyProperty="mile">
+		SELECT MILEAGE FROM MEMBERS WHERE MID=#{param1}
+	</selectKey>
+		UPDATE MEMBERS SET MILEAGE=#{mile}-#{param2} WHERE MID=#{param1}
+	</update>
+</mapper>
